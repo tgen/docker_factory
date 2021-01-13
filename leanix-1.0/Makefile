@@ -1,7 +1,7 @@
 DOCKER_REGISTRY         ?= localhost:5000
 PUBLISH_DOCKER_REGISTRY ?= localhost:5000
 LOCAL_SOURCES_SERVER    ?= localhost:8000
-IMAGE_ARCH              ?= haswell
+IMAGE_ARCH              ?= sandybridge
 
 default: all
 
