@@ -72,15 +72,17 @@ RUN cpanm BioPerl --force
 RUN HTSLIB_DIR=/opt/ cpanm Bio::DB::HTS::Tabix
 
 RUN mkdir -p /opt && \
-    cd /opt/ && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/vep-101.zip || \
-                  wget -t 3 https://github.com/Ensembl/ensembl-vep/archive/release/101.zip -O vep-101.zip ) && \
-                echo "0e2cc9736889aa3fcf99c763dbdad0b3db8a095caa718be8fd3a153e71f2c036  vep-101.zip" | sha256sum -c && true && \
-    cd /opt/ && unzip vep-101.zip && \
-    cd /opt/ && rm vep-101.zip && \
-    cd /opt/ && mv ensembl-vep-release-101 ensembl-vep && \
+    cd /opt/ && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/vep-98.zip || \
+                  wget -t 3 https://github.com/Ensembl/ensembl-vep/archive/release/98.zip -O vep-98.zip ) && \
+                echo "c11d949dbb25964fa8cef365efdeb1ec3896ba02c4cc67e1c4a2dfcd4b5e35f1  vep-98.zip" | sha256sum -c && true && \
+    cd /opt/ && unzip vep-98.zip && \
+    cd /opt/ && rm vep-98.zip && \
+    cd /opt/ && mv ensembl-vep-release-98 ensembl-vep && \
     cd /opt/ensembl-vep/ && ./INSTALL.pl -a a && \
-    cd /opt/ensembl-vep/ && mkdir -p /opt/bin && mv ./vep /opt/bin/ && \
+    cd /opt/ensembl-vep/ && mkdir -p /opt/bin && cp ./vep /opt/bin/ && \
     rm -rf /opt/ensembl-vep/t/test* /opt/ensembl-vep/examples
+
+RUN ln -s DB /opt/lib/perl5/site_perl/5.32.0/Bio/EnsEMBL
 
 FROM scratch
 

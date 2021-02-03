@@ -30,7 +30,8 @@ RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch/ && tar -xvf VerifyBamID-1.0.6.tar.gz && \
     cd /tmp/scratch/VerifyBamID-1.0.6/ && mkdir build && cd build/ && CFLAGS="-O3 -march=${IMAGE_ARCH}" CXXFLAGS="-O3 -march=${IMAGE_ARCH}" \
                                                                         cmake ../ -G "Ninja" -DCMAKE_INSTALL_PREFIX=/opt && \
-                                                                      ninja && cp ../bin/VerifyBamID /opt/bin/ && \
+                                                                      ninja && \
+                                                                      cp ../bin/* /opt/bin/ && \
     cd /tmp/scratch/VerifyBamID-1.0.6/ && cp -r resource /opt/ && \
     rm -rf /opt/lib/*.a && \
     cd / && rm -rf /tmp/scratch

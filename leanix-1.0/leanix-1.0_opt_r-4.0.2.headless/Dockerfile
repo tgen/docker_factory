@@ -6,6 +6,7 @@ FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_curl-7.70.0:${IMAGE_ARCH} AS opt_curl
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_pcre2-10.35:${IMAGE_ARCH} AS opt_pcre2
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_readline-8.0:${IMAGE_ARCH} AS opt_readline
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_xz-5.2.5:${IMAGE_ARCH} AS opt_xz
+FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_sed-4.8:${IMAGE_ARCH} AS opt_sed
 
 FROM ${DOCKER_REGISTRY}/leanix-1.0_tools:${IMAGE_ARCH} AS build
 
@@ -43,4 +44,4 @@ RUN sed -i 's|tools|opt|g' /opt/lib/R/bin/R
 FROM scratch
 
 COPY --from=build /opt /opt
-
+COPY --from=opt_sed /opt /opt

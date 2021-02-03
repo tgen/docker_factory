@@ -3,7 +3,7 @@
 MAKEFILE_PATH           := $(abspath $(lastword $(MAKEFILE_LIST)))
 DOCKER_REGISTRY         ?= localhost:5000
 IMAGE_NAME              ?= $$(basename $$(dirname ${MAKEFILE_PATH}) )
-IMAGE_ARCH              ?= latest
+IMAGE_ARCH              ?= sandybridge
 IMAGE_TAG               ?= ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_ARCH}
 LOCAL_IMAGE_DIR         ?= /archive/docker_factory/
 LOCAL_SOURCES_SERVER    ?= localhost:8000

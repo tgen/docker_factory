@@ -69,15 +69,17 @@ RUN cpanm IPC::Run
 RUN cpanm XML::DOM
 RUN cpanm XML::DOM::XPath --force
 RUN cpanm BioPerl --force
-RUN HTSLIB_DIR=/opt/ cpanm Bio::DB::HTS::Tabix
+ENV HTSLIB_DIR /opt/
+RUN cpanm Bio::DB::HTS::Tabix
 
 RUN mkdir -p /opt && \
-    cd /opt/ && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/vep-101.zip || \
-                  wget -t 3 https://github.com/Ensembl/ensembl-vep/archive/release/101.zip -O vep-101.zip ) && \
-                echo "0e2cc9736889aa3fcf99c763dbdad0b3db8a095caa718be8fd3a153e71f2c036  vep-101.zip" | sha256sum -c && true && \
-    cd /opt/ && unzip vep-101.zip && \
-    cd /opt/ && rm vep-101.zip && \
-    cd /opt/ && mv ensembl-vep-release-101 ensembl-vep && \
+    cd /opt/ && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/vep-102.zip || \
+                  wget -t 3 https://github.com/Ensembl/ensembl-vep/archive/release/102.zip -O vep-102.zip ) && \
+                echo "ec471bb0f61aea1b5302a4e418fbe710b59537aa812641d32b7dbdfc44178004  vep-102.zip" | sha256sum -c && true && \
+    cd /opt/ && unzip vep-102.zip && \
+    cd /opt/ && rm vep-102.zip && \
+    cd /opt/ && mv ensembl-vep-release-102 ensembl-vep && \
+    mkdir -p /usr && ln -s /opt/include /usr/ && \
     cd /opt/ensembl-vep/ && ./INSTALL.pl -a a && \
     cd /opt/ensembl-vep/ && mkdir -p /opt/bin && mv ./vep /opt/bin/ && \
     rm -rf /opt/ensembl-vep/t/test* /opt/ensembl-vep/examples

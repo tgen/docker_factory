@@ -2,6 +2,7 @@ ARG DOCKER_REGISTRY=localhost:5000
 ARG IMAGE_ARCH=sandybridge
 ARG LOCAL_SOURCES_SERVER=http://localhost:8000
 
+FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_x11-20200524:${IMAGE_ARCH} AS opt_x11
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_libpng-1.6.37:${IMAGE_ARCH} AS opt_libpng
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_pixman-0.34.0:${IMAGE_ARCH} AS opt_pixman
 FROM ${DOCKER_REGISTRY}/leanix-1.0_opt_fontconfig-2.13.1:${IMAGE_ARCH} AS opt_fontconfig
@@ -13,9 +14,10 @@ ARG IMAGE_ARCH
 ARG LOCAL_SOURCES_SERVER
 
 ENV PATH /opt/bin/:${PATH}
-ENV PKG_CONFIG_PATH /opt/pkgconfig/:/opt/lib64/:/opt/lib64/pkgconfig/:/opt/lib/:/opt/lib/pkgconfig/:${PKG_CONFIG_PATH}
+ENV PKG_CONFIG_PATH /opt/pkgconfig/:/opt/lib64/:/opt/lib64/pkgconfig/:/opt/lib/:/opt/lib/pkgconfig/:/opt/share/pkgconfig/${PKG_CONFIG_PATH}
 ENV LD_LIBRARY_PATH /opt/lib64/:/opt/lib/:${LD_LIBRARY_PATH}
 
+COPY --from=opt_x11 /opt /opt
 COPY --from=opt_libpng /opt /opt
 COPY --from=opt_pixman /opt /opt
 COPY --from=opt_fontconfig /opt /opt
@@ -31,8 +33,9 @@ RUN mkdir -p /tmp/scratch/build && \
                                      CXXFLAGS="-O3 -march=${IMAGE_ARCH} -I/opt/include/ -Wno-enum-conversion -Wnoint-in-bool-context -Wno-inline" \
                                      LDFLAGS="-L/opt/lib/ -lpng" \
                                      ./configure \
+                                       --prefix=/opt \
                                        --disable-static \
-                                       --prefix=/opt && \
+                                       --enable-xlib && \
                                      make -j$(nproc) && \
                                      make -j$(nproc) install && \
     rm -rf /opt/lib/*.a && \

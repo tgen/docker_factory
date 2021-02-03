@@ -35,6 +35,7 @@ RUN mkdir -p /tmp/scratch/build && \
                                 LDFLAGS="-O3 -march=${IMAGE_ARCH} -L/opt/lib/" \
                                 ./configure \
                                   --prefix=/opt \
+                                  --build=x86_64-pc-linux-gnu \
                                   --enable-R-shlib \
                                   --with-readline=yes \
                                   --with-x \
@@ -45,7 +46,7 @@ RUN mkdir -p /tmp/scratch/build && \
     rm -rf /opt/lib/*.a && \
     cd / && rm -rf /tmp/scratch
 
-RUN sed -i 's|tools|opt|g' /opt/lib/R/bin/R
+RUN sed -i 's|tools|opt|g' /opt/bin/R
 
 FROM scratch
 
