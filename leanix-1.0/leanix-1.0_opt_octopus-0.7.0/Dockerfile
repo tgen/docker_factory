@@ -36,6 +36,8 @@ RUN mkdir -p /tmp/scratch/build && \
     rm -rf /opt/lib/*.a && \
     cd / && rm -rf /tmp/scratch
 
+RUN mv /opt/octopus /opt/bin/
+
 FROM scratch
 
 COPY --from=build /opt/bin /opt/bin
