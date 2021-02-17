@@ -7,6 +7,8 @@ FROM ${DOCKER_REGISTRY}/leanix-1.0_tools:${IMAGE_ARCH} AS build
 ARG IMAGE_ARCH
 ARG LOCAL_SOURCES_SERVER
 
+ENV FORCE_UNSAFE_CONFIGURE 1
+
 RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch && wget -t 1 ${LOCAL_SOURCES_SERVER}/tar-1.34.tar.xz || \
                        wget -t 3 http://ftp.gnu.org/gnu/tar/tar-1.34.tar.xz && \
