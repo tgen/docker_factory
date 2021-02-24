@@ -142,6 +142,7 @@ COPY --from=build /tools/bin/ldd /opt/bin/
 COPY --from=build /etc/group /etc/group
 COPY --from=build /etc/passwd /etc/group
 COPY --from=build /etc/nsswitch.conf /etc/nsswitch.conf
+COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 
 ENV PATH /opt/bin/
 ENV LD_LIBRARY_PATH /opt/lib/

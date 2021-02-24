@@ -1758,6 +1758,7 @@ COPY --from=tools /bin/sh /bin/sh
 COPY --from=tools /bin/bash /bin/bash
 COPY --from=tools /tools /tools
 COPY --from=tools /etc/ /etc/
+COPY --from=tools /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build_openjdk /tools/java/ /tools/java/
 COPY --from=build_rust /opt /opt
 
