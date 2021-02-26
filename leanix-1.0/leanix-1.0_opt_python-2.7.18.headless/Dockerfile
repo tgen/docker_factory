@@ -36,7 +36,7 @@ RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch/build && CFLAGS="-O3 -march=${IMAGE_ARCH} -I/opt/include/ncursesw/" CXXFLAGS="-O3 -march=${IMAGE_ARCH}" \
                                ../Python-2.7.18/configure --prefix=/opt --with-openssl=/opt --enable-shared && \
     cd /tmp/scratch/build && make -j$(nproc) && make -j$(nproc) install && \
-    cd /tmp/scratch/ && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    cd /tmp/scratch/ && curl https://bootstrap.pypa.io/2.7/get-pip.py -o get-pip.py && \
     cd /tmp/scratch/ && python get-pip.py && \
     cd / && rm -rf /tmp/scratch
 
