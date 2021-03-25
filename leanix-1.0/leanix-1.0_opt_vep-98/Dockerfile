@@ -27,59 +27,81 @@ ENV PATH /opt/bin/:${PATH}
 ENV PKG_CONFIG_PATH /opt/pkgconfig/:/opt/lib/:/opt/lib/pkgconfig/
 ENV LD_LIBRARY_PATH /opt/lib/:${LD_LIBRARY_PATH}
 
-RUN cpan App::cpanminus
 ENV EXPATLIBPATH /opt/lib
 ENV EXPATINCPATH /opt/include
-RUN cpanm XML::Parser --force
+ENV HTSLIB_DIR /opt/
 
-RUN cpanm URI
-RUN cpanm Alien::Build
-RUN cpanm Alien::Libxml2
-RUN cpanm DBI
-RUN cpanm Test::LeakTrace
-RUN cpanm Exporter::Tiny
-RUN cpanm List::MoreUtils::XS
-RUN cpanm XML::Twig
-RUN cpanm Data::Stag
-RUN cpanm Graph::Directed
-RUN cpanm Test::Memory::Cycle
-RUN cpanm XML::LibXML
-RUN cpanm XML::LibXML::Reader
-
-RUN cpanm Error
-RUN cpanm Set::Scalar
-RUN cpanm XML::SAX
-RUN cpanm Test::Most
-RUN cpanm Test::Base
-RUN cpanm YAML
-RUN cpanm Module::Build
-
-RUN cpanm XML::Writer
-RUN cpanm XML::Parser::PerlSAX
-RUN cpanm IO::Scalar
-RUN cpanm XML::SAX::Base
-RUN cpanm List::MoreUtils
 RUN mkdir -p /usr/local/BerkeleyDB/ && ln -s /opt/include /usr/local/BerkeleyDB/ && \
-                                       ln -s /opt/lib /usr/local/BerkeleyDB/ && \
-    cpanm DB_File
-RUN cpanm XML::SAX::Writer
-RUN cpanm IO::String
-RUN cpanm Test::Weaken
-RUN cpanm IPC::Run
-RUN cpanm XML::DOM
-RUN cpanm XML::DOM::XPath --force
-RUN cpanm BioPerl --force
-RUN HTSLIB_DIR=/opt/ cpanm Bio::DB::HTS::Tabix
+                                       ln -s /opt/lib /usr/local/BerkeleyDB/
+RUN cpan App::cpanminus && \
+    cpanm Error && \
+    cpanm HTTP::Date && \
+    cpanm Module::Build && \
+    cpanm List::MoreUtils && \
+    cpanm List::MoreUtils::XS && \
+    cpanm Set::Scalar && \
+    cpanm Test::Most && \
+    cpanm Test::Base && \
+    cpanm Test::Weaken && \
+    cpanm Test::LeakTrace && \
+    cpanm Test::Memory::Cycle && \
+    cpanm IO::String && \
+    cpanm XML::LibXML && \
+    cpanm XML::LibXML::Reader && \
+    cpanm XML::Writer && \
+    cpanm XML::Parser && \
+    cpanm XML::Parser::PerlSAX && \
+    cpanm XML::Twig && \
+    cpanm XML::SAX && \
+    cpanm XML::SAX::Base && \
+    cpanm XML::SAX::Writer && \
+    cpanm XML::DOM && \
+    cpanm XML::DOM::XPath --force && \
+    cpanm YAML && \
+    cpanm URI && \
+    cpanm IO::Scalar && \
+    cpanm Alien::Build && \
+    cpanm Alien::Libxml2 && \
+    cpanm DB_File && \
+    cpanm DBI && \
+    cpanm Exporter::Tiny && \
+    cpanm Data::Stag && \
+    cpanm Graph::Directed && \
+    cpanm IPC::Run
 
+RUN cpanm XML::Simple && \
+    cpanm Array::Compare && \
+    cpanm Bio::Phylo && \
+    cpanm HTML::TableExtract && \
+    cpanm Sort::Naturally
+
+RUN cpanm DBD::SQLite
+RUN cpanm Algorithm::Munkres && \
+    cpanm Clone && \
+    cpanm Convert::Binary::C
+RUN cpanm PostScript::TextBlock && \
+    cpanm SOAP::Lite && \
+    cpanm SVG && \
+    cpanm SVG::Graph && \
+    cpanm Spreadsheet::ParseExcel
+
+RUN mkdir -p /tmp/scratch/build && \
+    cd /tmp/scratch && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/BioPerl-1.6.924.tar.gz || \
+                         wget -t 3 https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/BioPerl-1.6.924.tar.gz  ) && \
+                       echo "616a7546bb3c58504de27304a0f6cb904e18b6bbcdb6a4ec8454f2bd37bb76d0  BioPerl-1.6.924.tar.gz" | sha256sum -c && \
+                       tar -xvf BioPerl-1.6.924.tar.gz && \
+    cd /tmp/scratch/BioPerl-1.6.924 && perl ./Build.PL && ./Build && ./Build install && \ 
+    rm -rf /tmp/scratch
+    
 RUN mkdir -p /opt && \
     cd /opt/ && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/vep-98.zip || \
                   wget -t 3 https://github.com/Ensembl/ensembl-vep/archive/release/98.zip -O vep-98.zip ) && \
-                echo "c11d949dbb25964fa8cef365efdeb1ec3896ba02c4cc67e1c4a2dfcd4b5e35f1  vep-98.zip" | sha256sum -c && true && \
+                echo "c11d949dbb25964fa8cef365efdeb1ec3896ba02c4cc67e1c4a2dfcd4b5e35f1  vep-98.zip" | sha256sum -c && \
     cd /opt/ && unzip vep-98.zip && \
     cd /opt/ && rm vep-98.zip && \
     cd /opt/ && mv ensembl-vep-release-98 ensembl-vep && \
     cd /opt/ensembl-vep/ && ./INSTALL.pl -a a && \
-    cd /opt/ensembl-vep/ && mkdir -p /opt/bin && cp ./vep /opt/bin/ && \
+    mkdir -p /opt/bin && ln -s /opt/ensembl-vep/vep /opt/bin/ && \
     rm -rf /opt/ensembl-vep/t/test* /opt/ensembl-vep/examples
 
 RUN ln -s DB /opt/lib/perl5/site_perl/5.32.0/Bio/EnsEMBL

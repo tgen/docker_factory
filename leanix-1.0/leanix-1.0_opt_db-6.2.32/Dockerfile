@@ -15,6 +15,7 @@ RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch/build && CFLAGS="-O3 -march=${IMAGE_ARCH}" \
                              CXXFLAGS="-O3 -march=${IMAGE_ARCH}" \
                              ../db-6.2.32/dist/configure --prefix=/opt --enable-compat185 --enable-cxx && \
+    cd /tmp/scratch/db-6.2.32 && sed -i 's|__atomic_compare_exchange(|__atomic_compare_exchange_db(|g' src/dbinc/atomic.h && \
     cd /tmp/scratch/build && make -j$(nproc) && make -j$(nproc) install && \
     rm -rf /opt/lib/*.a && \
     cd / && rm -rf /tmp/scratch
