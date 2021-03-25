@@ -109,11 +109,11 @@ RUN rm -f /opt/lib/*.a && \
     rm -f /opt/bin/x86_64-* && \
     rm -rf /opt/lib/*.la && \
     rm -rf /opt/lib/pkgconfig && \
-    strip --strip-debug /opt/lib/* && \
+    strip --strip-unneeded /opt/lib/* && \
     /usr/bin/strip --strip-unneeded /opt/{,s}bin/* || true && \
     rm -rf /opt/{,share}/{info,man,doc} && \
     find /opt/{lib,libexec} -name \*.la -delete
-#RUN find / -name libnsl.so.1 && false
+
 FROM scratch
 
 COPY --from=build /bin/bash /bin/bash
