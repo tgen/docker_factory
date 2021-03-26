@@ -3,10 +3,21 @@ ARG IMAGE_ARCH=sandybridge
 
 FROM ${SOURCE_DOCKER_REGISTRY}/leanix-1.0_opt_bwa-0.7.17:${IMAGE_ARCH} as opt_bwa
 
-FROM ${SOURCE_DOCKER_REGISTRY}/leanix-1.0_opt_base:${IMAGE_ARCH}
+FROM ${SOURCE_DOCKER_REGISTRY}/leanix-1.0_tools:${IMAGE_ARCH} as build
 
 COPY --from=opt_bwa /opt/ /opt/
 
-RUN rm -rf /opt/share
+RUN rm -f /opt/lib/*.a && \
+    rm -f /opt/bin/x86_64-* && \
+    rm -rf /opt/lib/*.la && \
+    rm -rf /opt/lib/pkgconfig && \
+    strip --strip-unneeded /opt/lib/* && \
+    /usr/bin/strip --strip-unneeded /opt/{,s}bin/* || true && \
+    rm -rf /opt/{,share}/{info,man,doc} && \
+    find /opt/ -name \*.la -delete
+
+FROM ${SOURCE_DOCKER_REGISTRY}/leanix-1.0_opt_base:${IMAGE_ARCH}
+
+COPY --from=build /opt/ /opt/
 
 LABEL org.opencontainers.image.source=https://github.com/tgen/docker_factory

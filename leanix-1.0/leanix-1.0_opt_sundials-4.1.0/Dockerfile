@@ -8,8 +8,8 @@ ARG IMAGE_ARCH
 ARG LOCAL_SOURCES_SERVER
 
 RUN mkdir -p /tmp/scratch/build && \
-    cd /tmp/scratch && wget -t 1 ${LOCAL_SOURCES_SERVER}/sundials-4.1.0.tar.gz || \
-                       wget -t 3 https://computing.llnl.gov/projects/sundials/download/sundials-4.1.0.tar.gz && \
+    cd /tmp/scratch && ( wget -t 1 ${LOCAL_SOURCES_SERVER}/sundials-4.1.0.tar.gz || \
+                         wget -t 3 https://github.com/LLNL/sundials/releases/download/v4.1.0/sundials-4.1.0.tar.gz ) && \
                        echo "280de1c27b2360170a6f46cb3799b2aee9dff3bddbafc8b08c291a47ab258aa5  sundials-4.1.0.tar.gz" | sha256sum -c && \
     cd /tmp/scratch && tar -xf sundials-4.1.0.tar.gz && \
     cd /tmp/scratch/build && CFLAGS="-O3 -march=${IMAGE_ARCH}" \
