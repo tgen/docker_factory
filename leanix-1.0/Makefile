@@ -46,6 +46,7 @@ all: tools \
 	 opt_miniconda3-4.8.2 \
 	 opt_ncursesw-6.2 \
 	 opt_octopus-0.7.0 \
+	 opt_openmpi-3.1.6 \
 	 opt_openssl-1.1.1g \
 	 opt_pairoscope-0.4.2 \
 	 opt_pango-1.46.1 \
@@ -198,6 +199,9 @@ opt_octopus-0.7.0: tools
 	
 opt_openjdk-8u: tools opt_x11-20200524
 	$(MAKE) -C leanix-1.0_opt_openjdk-8u
+	
+opt_openmpi-3.1.6: tools
+	$(MAKE) -C leanix-1.0_opt_openmpi-3.1.6
 	
 opt_openssl-1.1.1g: tools
 	$(MAKE) -C leanix-1.0_opt_openssl-1.1.1g
