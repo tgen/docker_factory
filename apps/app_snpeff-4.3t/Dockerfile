@@ -16,6 +16,8 @@ RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch && unzip snpEff_v4_3t_core.zip && mv snpEff /opt/ && \
     cd / && rm -rf /tmp/scratch
 
+
+        
 FROM ${SOURCE_DOCKER_REGISTRY}/leanix-1.0_opt_base:${IMAGE_ARCH}
 
 COPY --from=opt_openjdk /opt/ /opt/
