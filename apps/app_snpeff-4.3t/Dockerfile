@@ -27,6 +27,6 @@ RUN mkdir -p /opt/bin/ && echo -e '#!/bin/bash\njava -Xmx8G -jar /opt/snpEff/snp
 ENV PATH /opt/java/bin/:/opt/miniconda/bin/:${PATH}
 ENV JAVA_HOME /opt/java
 
-RUN java -jar snpEff.jar download GRCh38.76
+RUN cd /opt/snpEff/ && java -jar snpEff.jar download GRCh38.98
 
 LABEL org.opencontainers.image.source=https://github.com/tgen/jetstream_containers
