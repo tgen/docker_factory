@@ -11,7 +11,7 @@ RUN mkdir -p /tmp/scratch/build && \
     cd /tmp/scratch && git clone https://github.com/oneapi-src/oneTBB.git && \
     cd /tmp/scratch/oneTBB/ && git checkout onetbb_2021 && \
     cd /tmp/scratch/build/ && CFLAGS="-O3 -march=${IMAGE_ARCH}" \
-                              CXXFLAGS="-O3 -march=${IMAGE_ARCH} -Wno-deprecated-copy" \
+                              CXXFLAGS="-O3 -march=${IMAGE_ARCH} -Wno-deprecated-copy -Wno-maybe-uninitialized" \
                               cmake -DCMAKE_INSTALL_PREFIX=/opt/ \
                               -DCMAKE_BUILD_TYPE=Release \
                               -G "Ninja" \
